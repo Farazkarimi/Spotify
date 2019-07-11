@@ -20,6 +20,10 @@
 		D00BCB7822D770AF00CC0147 /* Artists.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00BCB7022D770AF00CC0147 /* Artists.swift */; };
 		D00BCB7922D770AF00CC0147 /* External_ids.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00BCB7122D770AF00CC0147 /* External_ids.swift */; };
 		D00BCB7A22D770AF00CC0147 /* External_urls.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00BCB7222D770AF00CC0147 /* External_urls.swift */; };
+		D00BCB7F22D7719500CC0147 /* TrackRowTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D00BCB7B22D7719500CC0147 /* TrackRowTableViewCell.xib */; };
+		D00BCB8022D7719500CC0147 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00BCB7C22D7719500CC0147 /* LoadingTableViewCell.swift */; };
+		D00BCB8122D7719500CC0147 /* TrackRowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00BCB7D22D7719500CC0147 /* TrackRowTableViewCell.swift */; };
+		D00BCB8222D7719500CC0147 /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D00BCB7E22D7719500CC0147 /* LoadingTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +42,10 @@
 		D00BCB7022D770AF00CC0147 /* Artists.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artists.swift; sourceTree = "<group>"; };
 		D00BCB7122D770AF00CC0147 /* External_ids.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = External_ids.swift; sourceTree = "<group>"; };
 		D00BCB7222D770AF00CC0147 /* External_urls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = External_urls.swift; sourceTree = "<group>"; };
+		D00BCB7B22D7719500CC0147 /* TrackRowTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TrackRowTableViewCell.xib; sourceTree = "<group>"; };
+		D00BCB7C22D7719500CC0147 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
+		D00BCB7D22D7719500CC0147 /* TrackRowTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackRowTableViewCell.swift; sourceTree = "<group>"; };
+		D00BCB7E22D7719500CC0147 /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +84,10 @@
 				D00BCB5C22D7703200CC0147 /* Main.storyboard */,
 				D00BCB5F22D7703300CC0147 /* Assets.xcassets */,
 				D00BCB6122D7703300CC0147 /* LaunchScreen.storyboard */,
+				D00BCB7C22D7719500CC0147 /* LoadingTableViewCell.swift */,
+				D00BCB7E22D7719500CC0147 /* LoadingTableViewCell.xib */,
+				D00BCB7D22D7719500CC0147 /* TrackRowTableViewCell.swift */,
+				D00BCB7B22D7719500CC0147 /* TrackRowTableViewCell.xib */,
 				D00BCB6422D7703300CC0147 /* Info.plist */,
 			);
 			path = Spotify;
@@ -155,7 +167,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D00BCB6322D7703300CC0147 /* LaunchScreen.storyboard in Resources */,
+				D00BCB8222D7719500CC0147 /* LoadingTableViewCell.xib in Resources */,
 				D00BCB6022D7703300CC0147 /* Assets.xcassets in Resources */,
+				D00BCB7F22D7719500CC0147 /* TrackRowTableViewCell.xib in Resources */,
 				D00BCB5E22D7703200CC0147 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -174,8 +188,10 @@
 				D00BCB7322D770AF00CC0147 /* Items.swift in Sources */,
 				D00BCB7622D770AF00CC0147 /* Tracks.swift in Sources */,
 				D00BCB5922D7703100CC0147 /* AppDelegate.swift in Sources */,
+				D00BCB8022D7719500CC0147 /* LoadingTableViewCell.swift in Sources */,
 				D00BCB7922D770AF00CC0147 /* External_ids.swift in Sources */,
 				D00BCB7722D770AF00CC0147 /* Album.swift in Sources */,
+				D00BCB8122D7719500CC0147 /* TrackRowTableViewCell.swift in Sources */,
 				D00BCB7522D770AF00CC0147 /* SpotifySearchResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
