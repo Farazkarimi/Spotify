@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Kingfisher
+import Reachability
 
 class ViewController: UIViewController {
     
@@ -23,6 +25,21 @@ class ViewController: UIViewController {
         self.spotifyLogo.image = UIImage(named: "Spotify")
     }
     
+    fileprivate func initialValues(){
+        KingfisherManager.shared.cache.memoryStorage.config.totalCostLimit = 10000
+        NotificationCenter.default.addObserver(self, selector: #selector(self.requestAuthorizationBearerToken(_:)), name: NSNotification.Name(rawValue: Constants.afterLoginNotificationKey), object: nil)
+        _ = spotify.getTokenIfNeeded()
+        
+        let reachability = Reachability(hostname: "Spotify.com")!
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .reachabilityChanged, object: reachability)
+        do{
+            try reachability.startNotifier()
+        }catch{
+            print("could not start reachability notifier")
+        }
+    }
+
     fileprivate func configSearchBar(){
         self.searchBar.returnKeyType = .done
         self.searchBar.showsScopeBar = false
@@ -37,6 +54,24 @@ class ViewController: UIViewController {
         self.tableView.register(UINib(nibName: "TrackRowTableViewCell", bundle: nil), forCellReuseIdentifier: "TrackRowCell")
         self.tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "LoadingCell")
     }
+    
+    @objc fileprivate func requestAuthorizationBearerToken(_ notification: NSNotification){
+        if let url = (notification.userInfo?["url"] as? URL){
+            spotify.getCodeFromUrlParams(url: url)
+        }
+    }
+    
+    @objc func reachabilityChanged(note: Notification) {
+        
+        let reachability = note.object as! Reachability
+        
+        reachability.whenReachable = { [weak self] _ in
+
+        }
+        reachability.whenUnreachable = { [weak self] _ in
+        }
+    }
+
     
 }
 
