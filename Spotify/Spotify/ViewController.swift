@@ -10,11 +10,18 @@ import UIKit
 import Kingfisher
 import Reachability
 
+protocol SearcherDelegate {
+    func performSearch()
+}
+
 class ViewController: UIViewController {
     
     var tracks: Tracks? = nil
     var items = [Items]()
     let spotify = Spotify.sharedInstance
+    var networkErrorAware: NetworkErrorAware? = nil
+    var currenWaintingtMode: WaitingMode = .wait
+    var searchWasFailed = false
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var spotifyLogo: UIImageView!
@@ -53,6 +60,44 @@ class ViewController: UIViewController {
         self.searchBar.delegate = self
     }
     
+    func performSearch() {
+        if currenWaintingtMode == .retry {
+            return
+        }
+        self.networkErrorAware?.configure(mode: .wait)
+        if let searchText = searchBar.text, searchText != "" {
+            spotify.trackSearch(searchQuery: searchText, currentTracks: self.tracks) { [weak self](newTracks, error, searchWasSuccessful) in
+                self?.searchWasFailed = false
+                if let _ = error {
+                    self?.networkErrorAware?.configure(mode: .retry)
+                    self?.searchWasFailed = true
+                    return
+                }
+                if (searchWasSuccessful) {
+                    self?.networkErrorAware?.configure(mode: .wait)
+                    if let newTracks = newTracks {
+                        if let newItems = newTracks.items {
+                            self?.items.append(contentsOf: newItems)
+                        }
+                        self?.tracks = newTracks
+                        (self?.items.count == 0) ? (self?.tableView.isHidden = true) : (self?.tableView.isHidden = false)
+                        self?.tableView.reloadData()
+                    }
+                }
+            }
+        } else {
+            self.searchWasFailed = false
+            self.tracks = nil
+            self.items = [Items]()
+            self.networkErrorAware = nil
+            (items.count == 0) ? (self.tableView.isHidden = true) : (self.tableView.isHidden = false)
+            
+            self.tableView.reloadData()
+        }
+    }
+
+    
+    
     fileprivate func configTableView(){
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -73,9 +118,15 @@ class ViewController: UIViewController {
         let reachability = note.object as! Reachability
         
         reachability.whenReachable = { [weak self] _ in
-            
+            self?.currenWaintingtMode = .wait
+            self?.networkErrorAware?.configure(mode: .wait)
         }
         reachability.whenUnreachable = { [weak self] _ in
+            self?.currenWaintingtMode = .retry
+            self?.tableView.reloadData()
+            if self?.searchWasFailed ?? false {
+                self?.performSearch()
+            }
         }
     }
     
@@ -100,14 +151,49 @@ extension ViewController: UITableViewDelegate{
     
 }
 
-extension ViewController: UITableViewDataSource{
+extension ViewController: UITableViewDataSource, SearcherDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        
+        if let tracks = self.tracks {
+            let hasMore = tracks.next != nil
+            return self.items.count + (hasMore ? 1 : 0)
+        }
+        return (currenWaintingtMode == .retry ? 1 : 0)
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == self.items.count{
+            let loadingCell = tableView.dequeueReusableCell(withIdentifier: "LoadingCell", for: indexPath) as! LoadingTableViewCell
+            performSearch()
+            loadingCell.configure(mode: currenWaintingtMode)
+            loadingCell.searcher = self
+            //self.networkErrorAware = loadingCell
+            return loadingCell
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: "TrackRowCell", for: indexPath) as! TrackRowTableViewCell
+        let item = items[indexPath.row]
+        guard let artists = item.artists else {
+            return cell
+        }
+        guard let albumName = item.album?.name else {
+            return cell
+        }
+        
+        guard let images = item.album?.images else{
+            return cell
+        }
+        
+        guard let title = item.name else {
+            return cell
+        }
+        
+        let artistsName = artists.map({$0.name!})
+        cell.artistLabel.text = artistsName.joined(separator: " - ")
+        cell.albumLabel.text = albumName
+        cell.titleLabel.text = title
         return cell
+        
     }
     
     
