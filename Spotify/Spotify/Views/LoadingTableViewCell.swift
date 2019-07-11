@@ -17,7 +17,7 @@ enum WaitingMode {
     case wait
 }
 
-class LoadingTableViewCell: UITableViewCell {
+class LoadingTableViewCell: UITableViewCell, NetworkErrorAware {
     
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     

@@ -1,9 +1,8 @@
 //
 //  ViewController.swift
 //  Spotify
-//
-//  Created by Faraz on 7/11/19.
-//  Copyright © 2019 mydigipay. All rights reserved.
+//  Created by Faraz on 7/9/19.
+//  Copyright © 2019 Faraz. All rights reserved.
 //
 
 import UIKit
@@ -14,7 +13,7 @@ protocol SearcherDelegate {
     func performSearch()
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,SearcherDelegate {
     
     var tracks: Tracks? = nil
     var items = [Items]()
@@ -27,8 +26,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var spotifyLogo: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     
+
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.configTableView()
         self.configSearchBar()
         self.initialViews()
@@ -58,6 +61,22 @@ class ViewController: UIViewController {
         self.searchBar.returnKeyType = .done
         self.searchBar.showsScopeBar = false
         self.searchBar.delegate = self
+    }
+    
+    fileprivate func configTableView(){
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.isHidden = true
+        self.tableView.tableFooterView = UIView()
+        self.tableView.register(UINib(nibName: "TrackRowTableViewCell", bundle: nil), forCellReuseIdentifier: "TrackRowCell")
+        self.tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "LoadingCell")
+    }
+    
+    @objc fileprivate func requestAuthorizationBearerToken(_ notification: NSNotification){
+        if let url = (notification.userInfo?["url"] as? URL){
+            spotify.getCodeFromUrlParams(url: url)
+        }
+        
     }
     
     func performSearch() {
@@ -95,23 +114,6 @@ class ViewController: UIViewController {
             self.tableView.reloadData()
         }
     }
-
-    
-    
-    fileprivate func configTableView(){
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.isHidden = true
-        self.tableView.tableFooterView = UIView()
-        self.tableView.register(UINib(nibName: "TrackRowTableViewCell", bundle: nil), forCellReuseIdentifier: "TrackRowCell")
-        self.tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "LoadingCell")
-    }
-    
-    @objc fileprivate func requestAuthorizationBearerToken(_ notification: NSNotification){
-        if let url = (notification.userInfo?["url"] as? URL){
-            spotify.getCodeFromUrlParams(url: url)
-        }
-    }
     
     @objc func reachabilityChanged(note: Notification) {
         
@@ -130,18 +132,6 @@ class ViewController: UIViewController {
         }
     }
     
-    
-}
-
-extension ViewController:UISearchBarDelegate{
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        self.view.endEditing(true)
-    }
-    
 }
 
 extension ViewController: UITableViewDelegate{
@@ -151,7 +141,7 @@ extension ViewController: UITableViewDelegate{
     
 }
 
-extension ViewController: UITableViewDataSource, SearcherDelegate {
+extension ViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if let tracks = self.tracks {
@@ -168,7 +158,7 @@ extension ViewController: UITableViewDataSource, SearcherDelegate {
             performSearch()
             loadingCell.configure(mode: currenWaintingtMode)
             loadingCell.searcher = self
-            //self.networkErrorAware = loadingCell
+            self.networkErrorAware = loadingCell
             return loadingCell
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "TrackRowCell", for: indexPath) as! TrackRowTableViewCell
@@ -192,9 +182,51 @@ extension ViewController: UITableViewDataSource, SearcherDelegate {
         cell.artistLabel.text = artistsName.joined(separator: " - ")
         cell.albumLabel.text = albumName
         cell.titleLabel.text = title
+        chooseAndSetImage(images: images, imageView: cell.trackImage)
         return cell
         
     }
     
+    
+    func chooseAndSetImage(images: [Images], imageView: UIImageView) {
+        
+        let imageUrl: String?
+        if images.count > 2 {
+            imageUrl = images[1].url
+        } else {
+            imageUrl = images.last?.url
+        }
+        if let imageUrl = imageUrl {
+            let processor = DownsamplingImageProcessor(size: imageView.frame.size)
+            let options: [KingfisherOptionsInfoItem] = [
+                .processor(processor),
+                .scaleFactor(UIScreen.main.scale),
+                .transition(.fade(0.3))
+            ]
+            imageView.kf.indicatorType = .activity
+            imageView.kf.setImage(
+                with: URL(string: imageUrl),
+                placeholder: UIImage(named: "headphone"),
+                options: options)
+            
+        } else {
+            imageView.image = UIImage(named: "headphone")
+        }
+    }
+    
+}
+
+extension ViewController:UISearchBarDelegate{
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.tracks = nil
+        self.items = [Items]()
+        self.networkErrorAware = nil
+        self.tableView.reloadData()
+        performSearch()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.view.endEditing(true)
+    }
     
 }
