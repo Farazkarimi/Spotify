@@ -22,7 +22,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.spotifyLogo.image = UIImage(named: "Spotify")
+        self.configTableView()
+        self.configSearchBar()
+        self.initialViews()
+        self.initialValues()
     }
     
     fileprivate func initialValues(){
@@ -39,7 +42,11 @@ class ViewController: UIViewController {
             print("could not start reachability notifier")
         }
     }
-
+    
+    fileprivate func initialViews(){
+        self.spotifyLogo.image = UIImage(named: "Spotify")
+    }
+    
     fileprivate func configSearchBar(){
         self.searchBar.returnKeyType = .done
         self.searchBar.showsScopeBar = false
@@ -66,12 +73,12 @@ class ViewController: UIViewController {
         let reachability = note.object as! Reachability
         
         reachability.whenReachable = { [weak self] _ in
-
+            
         }
         reachability.whenUnreachable = { [weak self] _ in
         }
     }
-
+    
     
 }
 
