@@ -26,6 +26,8 @@
 		D00BCB8122D7719500CC0147 /* TrackRowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00BCB7D22D7719500CC0147 /* TrackRowTableViewCell.swift */; };
 		D00BCB8222D7719500CC0147 /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D00BCB7E22D7719500CC0147 /* LoadingTableViewCell.xib */; };
 		D00BCB8522D772A000CC0147 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00BCB8422D7729F00CC0147 /* Spotify.swift */; };
+		D00BCB8722D773CE00CC0147 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00BCB8622D773CE00CC0147 /* Networking.swift */; };
+		D00BCB8A22D7740F00CC0147 /* URL+QueryParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00BCB8922D7740F00CC0147 /* URL+QueryParameters.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +54,8 @@
 		D00BCB7D22D7719500CC0147 /* TrackRowTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackRowTableViewCell.swift; sourceTree = "<group>"; };
 		D00BCB7E22D7719500CC0147 /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
 		D00BCB8422D7729F00CC0147 /* Spotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
+		D00BCB8622D773CE00CC0147 /* Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		D00BCB8922D7740F00CC0147 /* URL+QueryParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+QueryParameters.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,10 +100,12 @@
 		D00BCB5722D7703100CC0147 /* Spotify */ = {
 			isa = PBXGroup;
 			children = (
+				D00BCB8822D773F200CC0147 /* Extesions */,
 				D00BCB6A22D7708500CC0147 /* Models */,
 				D00BCB8322D7726600CC0147 /* Views */,
 				D00BCB5822D7703100CC0147 /* AppDelegate.swift */,
 				D00BCB5A22D7703100CC0147 /* ViewController.swift */,
+				D00BCB8622D773CE00CC0147 /* Networking.swift */,
 				D00BCB8422D7729F00CC0147 /* Spotify.swift */,
 				D00BCB5C22D7703200CC0147 /* Main.storyboard */,
 				D00BCB5F22D7703300CC0147 /* Assets.xcassets */,
@@ -133,6 +139,14 @@
 				D00BCB7B22D7719500CC0147 /* TrackRowTableViewCell.xib */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		D00BCB8822D773F200CC0147 /* Extesions */ = {
+			isa = PBXGroup;
+			children = (
+				D00BCB8922D7740F00CC0147 /* URL+QueryParameters.swift */,
+			);
+			path = Extesions;
 			sourceTree = "<group>";
 		};
 		D4163E4C32A9A74401D3A69D /* Frameworks */ = {
@@ -276,12 +290,14 @@
 				D00BCB7822D770AF00CC0147 /* Artists.swift in Sources */,
 				D00BCB7322D770AF00CC0147 /* Items.swift in Sources */,
 				D00BCB7622D770AF00CC0147 /* Tracks.swift in Sources */,
+				D00BCB8A22D7740F00CC0147 /* URL+QueryParameters.swift in Sources */,
 				D00BCB5922D7703100CC0147 /* AppDelegate.swift in Sources */,
 				D00BCB8022D7719500CC0147 /* LoadingTableViewCell.swift in Sources */,
 				D00BCB7922D770AF00CC0147 /* External_ids.swift in Sources */,
 				D00BCB7722D770AF00CC0147 /* Album.swift in Sources */,
 				D00BCB8122D7719500CC0147 /* TrackRowTableViewCell.swift in Sources */,
 				D00BCB7522D770AF00CC0147 /* SpotifySearchResponse.swift in Sources */,
+				D00BCB8722D773CE00CC0147 /* Networking.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

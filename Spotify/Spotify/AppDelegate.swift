@@ -41,6 +41,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        let userInfo = ["url":url]
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.afterLoginNotificationKey), object: nil, userInfo: userInfo )
+        return true
+    }
 
 }
 
