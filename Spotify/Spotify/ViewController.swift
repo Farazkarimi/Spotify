@@ -36,6 +36,8 @@ class ViewController: UIViewController,SearcherDelegate {
         self.configSearchBar()
         self.initialViews()
         self.initialValues()
+        
+        
     }
     
     fileprivate func initialValues(){
